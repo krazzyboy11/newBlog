@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Requests\PostRequest;
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class BlogController extends BackendController
 {
-    protected $limit = 10;
+    protected $limit = 8;
+    protected $uploadPath;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->uploadPath = public_path(config('cms.image.directory'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,28 +27,54 @@ class BlogController extends BackendController
     public function index()
     {
         $posts = Post::with('category','author')->latest()->paginate($this->limit);
-        return view('backend.blog.index', compact('posts'));
+        $postCount = Post::count();
+        return view('backend.blog.index', compact('posts','postCount'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param Post $post
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Post $post)
     {
-        //
+        return view('backend.blog.create', compact('post'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $data = $this->handleRequest($request);
+        $request->user()->posts()->create($data);
+        return redirect('/backend/blog')->with('success','Your post was created successfully');
+    }
+    private function handleRequest($request){
+        $data = $request->all();
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $fileName = $image->getClientOriginalName() ;
+
+            $destination = $this->uploadPath;
+            $successUploaded = $image->move($destination,$fileName);
+            if($successUploaded){
+                $width = config('cms.image.thumbnail.width');
+                $height = config('cms.image.thumbnail.height');
+                $extension = $image->getClientOriginalExtension();
+                $thumbnail = str_replace(".{$extension}", "_thumb.{$extension}",$fileName);
+                Image::make($destination . '/' . $fileName)
+                    ->resize($width,$height)
+                    ->save($destination . '/' . $thumbnail);
+            }
+            $data['image'] = $fileName;
+        }
+        return $data;
     }
 
     /**

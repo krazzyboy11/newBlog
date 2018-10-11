@@ -11,7 +11,15 @@
                 <small>Display all blog post</small>
             </h1>
             <ol class="breadcrumb">
-                <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+                <li>
+                    <a href="{{url('/home')}}"><i class="fa fa-dashboard"></i> Dashboard</a>
+
+                </li>
+                <li>
+                    <a href="{{url('backend.blog.index')}}"><i class="fa fa-dashboard"></i> Blog</a>
+                </li>
+                <li class="active">All Posts</li>
+
             </ol>
         </section>
 
@@ -20,8 +28,23 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
+                        <div class="box-header">
+                            <div class="pull-left">
+                                <a href="{{route('backend.blog.create')}}" class="btn btn-success">Add new</a>
+                            </div>
+                        </div>
                         <!-- /.box-header -->
                         <div class="box-body ">
+                            @if(session('success'))
+                                <div class="alert alert-info">
+                                    {{session('success')}}
+                                </div>
+                            @endif
+                            @if(!$posts->count())
+                                <div class="alert alert-danger">
+                                    <strong>No record found</strong>
+                                </div>
+                            @else
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
@@ -36,10 +59,10 @@
                                 @foreach($posts as $post)
                                     <tr>
                                     <td>
-                                        <a href="{{route('blog.edit', $post->id)}}" class="btn btn-xs btn-default">
+                                        <a href="{{route('backend.blog.edit', $post->id)}}" class="btn btn-xs btn-default">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a href="{{route('blog.destroy', $post->id)}}" class="btn btn-xs btn-danger">
+                                        <a href="{{route('backend.blog.destroy', $post->id)}}" class="btn btn-xs btn-danger">
                                             <i class="fa fa-times"></i>
                                         </a>
                                     </td>
@@ -54,6 +77,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            @endif
                         </div>
                         <div class="box-footer clearfix">
                             <div class="pull-left">
@@ -69,7 +93,6 @@
 --}}
                             </div>
                             <div class="pull-right">
-                                <?php $postCount = $post->count() ?>
                                 <small>{{$postCount}} {{str_plural('Item', $postCount)}}</small>
                             </div>
 
@@ -86,4 +109,10 @@
 
     </div>
 
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        $('ul.pagination').addClass('no-margin pagination-sm');
+    </script>
 @endsection

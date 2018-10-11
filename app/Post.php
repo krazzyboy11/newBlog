@@ -9,6 +9,7 @@ use GrahamCampbell\Markdown\Facades\Markdown;
 class Post extends Model
 {
 /*    protected $fillable = ['view_count'];*/
+    protected $fillable = ['title','slug','excerpt','body','published_at','category_id','image'];
     protected $dates = ['published_at'];
 
     public function category(){
@@ -25,7 +26,8 @@ class Post extends Model
 
         if ( ! is_null($this->image))
         {
-            $imagePath = public_path() . "/img/" . $this->image;
+            $directory = config('cms.image.directory');
+            $imagePath = public_path() . "/{$directory}/" . $this->image;
             if (file_exists($imagePath)) $imageUrl = asset("img/" . $this->image);
         }
 
@@ -37,10 +39,12 @@ class Post extends Model
 
         if ( ! is_null($this->image))
         {
+            $directory = config('cms.image.directory');
+
             $ext = substr(strrchr($this->image, '.'),1);
             $thumbnail = str_replace(".{$ext}", "_thumb.{$ext}", $this->image);
-            $imagePath = public_path() . "/img/" . $thumbnail;
-            if (file_exists($imagePath)) $imageUrl = asset("img/" . $thumbnail);
+            $imagePath = public_path() . "/{$directory}/" . $thumbnail;
+            if (file_exists($imagePath)) $imageUrl = asset("{$directory}/" . $thumbnail);
         }
 
         return $imageUrl;
@@ -59,6 +63,10 @@ class Post extends Model
     public function getExcerptHtmlAttribute($value)
     {
         return $this->excerpt ? Markdown::convertToHtml(e($this->excerpt)) : NULL;
+    }
+
+    public function setPublishedAtAttribute($value){
+        $this->attributes['published_at'] = $value ?: NULL;
     }
 
 
@@ -91,9 +99,4 @@ class Post extends Model
             return '<span class="label label-success">Published</span>';
         }
     }
-
-
-
-
-
 }
