@@ -5,9 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
+    use softDeletes;
 /*    protected $fillable = ['view_count'];*/
     protected $fillable = ['title','slug','excerpt','body','published_at','category_id','image'];
     protected $dates = ['published_at'];
@@ -79,10 +81,7 @@ class Post extends Model
         return $query->orderBy('view_count', 'desc');
     }
 
-    public function scopePublished($query)
-    {
-        return $query->where("published_at", "<=", Carbon::now());
-    }
+
     public function dateFormatted($showTimes = false){
         $format = "d/m/Y";
         if($showTimes) $format = $format . " H:i:s";
@@ -98,5 +97,17 @@ class Post extends Model
         else{
             return '<span class="label label-success">Published</span>';
         }
+    }
+    public function scopePublished($query)
+    {
+        return $query->where("published_at", "<=", Carbon::now());
+    }
+    public function scopeScheduled($query)
+    {
+        return $query->where("published_at", ">", Carbon::now());
+    }
+    public function scopeDraft($query)
+    {
+        return $query->whereNull("published_at");
     }
 }

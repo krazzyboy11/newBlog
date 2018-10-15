@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/backend/plugins/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="/backend/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -21,6 +22,8 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="/backend/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="/backend/plugins/simplemde/simplemde.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
     <link rel="stylesheet" href="/backend/css/custom.css">
 
 
@@ -57,6 +60,9 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="/backend/js/bootstrap.min.js"></script>
 <script src="/backend/plugins/simplemde/simplemde.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/backend/js/app.min.js"></script>
 @yield('script')

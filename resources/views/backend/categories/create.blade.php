@@ -1,6 +1,6 @@
 @extends('layouts.backend.main')
 
-@section('title','My blog | Add new post ')
+@section('title','My blog | Add new category ')
 
 @section('content')
     <div class="content-wrapper">
@@ -16,7 +16,7 @@
 
                 </li>
                 <li>
-                    <a href="{{route('backend.blog.index')}}"><i class="fa fa-dashboard"></i> Blog</a>
+                    <a href="{{route('backend.category.index')}}"><i class="fa fa-dashboard"></i> Category</a>
                 </li>
                 <li class="active">Add New</li>
 
@@ -26,13 +26,13 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                {!! Form::model($post, [
+                {!! Form::model($category, [
                                 'method' => 'POST',
-                                'route'  => 'backend.blog.store',
+                                'route'  => 'backend.category.store',
                                 'files'  =>TRUE,
-                                'id'     =>'post-form'
+                                'id'     =>'category-form'
                             ]) !!}
-                @include('backend.blog.form')
+                @include('backend.categories.form')
                 {!! Form::close() !!}
 
             </div>
@@ -43,4 +43,4 @@
 
 @endsection
 
-@include('backend.blog.script')
+@include('backend.categories.script')
