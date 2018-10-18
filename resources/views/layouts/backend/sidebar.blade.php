@@ -8,7 +8,7 @@
                 <img src="/backend/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>{{$currentUser->name}}</p>
+                <p>{{ Auth::user()->name}}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -33,7 +33,12 @@
                     <li><a href="{{route('backend.blog.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
                 </ul>
             </li>
+            @role(['admin', 'editor'])
             <li><a href="{{route('backend.category.index')}}"><i class="fa fa-folder"></i> <span>Categories</span></a></li>
+            @endrole
+            @role('admin')
+            <li><a href="{{route('backend.users.index')}}"><i class="fa fa-users"></i> <span>Users</span></a></li>
+            @endrole
         </ul>
     </section>
     <!-- /.sidebar -->
